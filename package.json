@@ -1,0 +1,13 @@
+{
+  "name": "ap3-jest-mock-faker",
+  "version": "1.0.0",
+  "description": "Teste de liberação de cartão com Jest + Faker + Mock",
+  "main": "src/cardService.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "jest": "^29.0.0",
+    "faker": "^5.5.3"
+  }
+}
