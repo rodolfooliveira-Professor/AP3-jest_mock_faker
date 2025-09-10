@@ -20,3 +20,4 @@ São 100 testes automatizados usando Jest + Faker + Mock que o grupo deve comple
 1. O uso da biblioteca **faker** para gerar os dados aleatórios dos clientes.  
 2. A utilização de **mock** para simular a função de notificação (`sendCardNotification`).  
 3. A verificação de que o mock foi chamado **exatamente uma vez** com os parâmetros corretos.  
+
