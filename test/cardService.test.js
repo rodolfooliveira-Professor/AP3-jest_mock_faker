@@ -18,9 +18,9 @@ let mockNotify;
 
   // TODO: Gerar 100 clientes aleatórios usando faker
   const clients = Array.from({ length: 100 }).map(() => ({
-    id: /* complete */,
-    age: /* complete */,
-    income: /* complete */
+    id: faker.string.uuid(),
+    age: faker.number.int({ min: 15, max: 80 }),
+    income: faker.number.int({ min: 500, max: 10000 })
   }));
 
   clients.forEach((client, index) => {
