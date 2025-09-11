@@ -1,14 +1,26 @@
 // test/cardService.test.js
 const { evaluateCard, sendCardNotification } = require("../src/cardService");
+const cardService = require("../src/cardService");
 const { faker } = require("@faker-js/faker");
 
 describe("Testes dinâmicos de liberação de cartão com Faker e Mock", () => {
+let mockNotify;
+
+  // TODO: Criar mock da função de notificação
+      beforeEach(() => {
+        mockNotify = jest.spyOn(cardService, "sendCardNotification")
+                        .mockImplementation(() => {});
+      });
+
+      afterEach(() => {
+        mockNotify.mockRestore();
+      });
 
   // TODO: Gerar 100 clientes aleatórios usando faker
   const clients = Array.from({ length: 100 }).map(() => ({
-    id: /* complete */,
-    age: /* complete */,
-    income: /* complete */
+    id: faker.string.uuid(),
+    age: faker.number.int({ min: 15, max: 80 }),
+    income: faker.number.int({ min: 500, max: 10000 })
   }));
 
   clients.forEach((client, index) => {
@@ -19,7 +31,7 @@ describe("Testes dinâmicos de liberação de cartão com Faker e Mock", () => {
       // TODO: Criar mock da função de notificação
       const mockNotify = /* complete */;
 
-      // TODO: Chamar o mock passando client.id e result
+      // 3. Chamar o mock passando client.id e result
       /* complete */
 
       // TODO: Verificar as regras de negócio com expect(...)
