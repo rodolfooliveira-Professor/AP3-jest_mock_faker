@@ -25,14 +25,11 @@ let mockNotify;
 
   clients.forEach((client, index) => {
     test(`Cliente #${index + 1} -> idade: ${client.age}, renda: ${client.income}`, () => {
-      // TODO: Chamar a função que avalia o cartão
-      const result = /* complete */;
-
-      // TODO: Criar mock da função de notificação
-      const mockNotify = /* complete */;
+     // TODO: Chamar a função que avalia o cartão
+      const result = evaluateCard(client);
 
       // 3. Chamar o mock passando client.id e result
-      /* complete */
+      cardService.sendCardNotification(client.id, result);
 
       // TODO: Verificar as regras de negócio com expect(...)
       if (/* condição cliente não aprovado */) {
