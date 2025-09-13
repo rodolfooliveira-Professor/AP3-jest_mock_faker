@@ -1,40 +1,41 @@
-// test/cardService.test.js
-const { evaluateCard, sendCardNotification } = require("../src/cardService");
-const { faker } = require("@faker-js/faker");
+const { getCardApproval } = require('../src/cardService.js');
+const { sendCardNotification } = require('../src/notificationService.js');
+const { faker } = require('@faker-js/faker');
 
-describe("Testes dinâmicos de liberação de cartão com Faker e Mock", () => {
+jest.mock('../src/notificationService.js', () => ({
+  sendCardNotification: jest.fn(),
+}));
 
-  // TODO: Gerar 100 clientes aleatórios usando faker
-  const clients = Array.from({ length: 100 }).map(() => ({
-    id: /* complete */,
-    age: /* complete */,
-    income: /* complete */
-  }));
-
-  clients.forEach((client, index) => {
-    test(`Cliente #${index + 1} -> idade: ${client.age}, renda: ${client.income}`, () => {
-      // TODO: Chamar a função que avalia o cartão
-      const result = /* complete */;
-
-      // TODO: Criar mock da função de notificação
-      const mockNotify = /* complete */;
-
-      // TODO: Chamar o mock passando client.id e result
-      /* complete */
-
-      // TODO: Verificar as regras de negócio com expect(...)
-      if (/* condição cliente não aprovado */) {
-        expect(result).toBe("NEGADO");
-      } else if (/* condição premium */) {
-        expect(result).toBe("PREMIUM");
-      } else {
-        expect(result).toBe("BÁSICO");
-      }
-
-      // TODO: Validar se o mock foi chamado corretamente
-      expect(/* complete */).toHaveBeenCalledTimes(1);
-      expect(/* complete */).toHaveBeenCalledWith(client.id, result);
-    });
+describe('cardService', () => {
+  beforeEach(() => {
+    sendCardNotification.mockClear();
   });
 
+  const testCases = Array.from({ length: 100 }, (_, i) => i + 1);
+
+  test.each(testCases)('should correctly process random customer #%s', () => {
+    // ARRANGE
+    const randomCustomer = {
+      name: faker.person.fullName(),
+      age: faker.number.int({ min: 15, max: 70 }),
+      income: faker.number.int({ min: 1500, max: 8000 }),
+    };
+
+    let expectedResult;
+    if (randomCustomer.age < 18 || randomCustomer.income <= 2000) {
+      expectedResult = 'NEGADO';
+    } else if (randomCustomer.income > 5000) {
+      expectedResult = 'PREMIUM';
+    } else {
+      expectedResult = 'BÁSICO';
+    }
+
+    // ACT
+    const actualResult = getCardApproval(randomCustomer);
+
+    // ASSERT
+    expect(actualResult).toBe(expectedResult);
+    expect(sendCardNotification).toHaveBeenCalledTimes(1);
+    expect(sendCardNotification).toHaveBeenCalledWith(randomCustomer, expectedResult);
+  });
 });

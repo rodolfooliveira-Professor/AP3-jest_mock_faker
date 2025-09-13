@@ -1,13 +1,22 @@
-function evaluateCard(client) {
-  if (client.age < 18) return "NEGADO";
-  if (client.income <= 2000) return "NEGADO";
-  if (client.income > 5000) return "PREMIUM";
-  return "BÁSICO";
+const { sendCardNotification } = require('./notificationService.js');
+
+function getCardApproval(customer) {
+  let approvalStatus;
+
+  // Aplica as regras de negócio
+  if (customer.age < 18 || customer.income <= 2000) {
+    approvalStatus = 'NEGADO';
+  } else if (customer.income > 5000) {
+    approvalStatus = 'PREMIUM';
+  } else {
+    approvalStatus = 'BÁSICO';
+  }
+
+  // Chama a função de notificação (que será mockada no teste)
+  sendCardNotification(customer, approvalStatus);
+
+  // Retorna o status final
+  return approvalStatus;
 }
 
-// Função de notificação (mockável)
-function sendCardNotification(clientId, cardType) {
-  console.log(`Cliente ${clientId}: Cartão ${cardType} enviado.`);
-}
-
-module.exports = { evaluateCard, sendCardNotification };
+module.exports = { getCardApproval };
