@@ -32,17 +32,17 @@ let mockNotify;
       cardService.sendCardNotification(client.id, result);
 
       // TODO: Verificar as regras de negócio com expect(...)
-      if (/* condição cliente não aprovado */) {
+      if (client.age < 18 || client.income <= 2000) {
         expect(result).toBe("NEGADO");
-      } else if (/* condição premium */) {
+      } else if (client.income > 5000) {
         expect(result).toBe("PREMIUM");
       } else {
         expect(result).toBe("BÁSICO");
       }
 
       // TODO: Validar se o mock foi chamado corretamente
-      expect(/* complete */).toHaveBeenCalledTimes(1);
-      expect(/* complete */).toHaveBeenCalledWith(client.id, result);
+      expect(mockNotify).toHaveBeenCalledTimes(1);
+      expect(mockNotify).toHaveBeenCalledWith(client.id, result);
     });
   });
 
