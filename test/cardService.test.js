@@ -1,40 +1,38 @@
-// test/cardService.test.js
-const { evaluateCard, sendCardNotification } = require("../src/cardService");
+const { evaluateCard } = require("../src/cardService");
 const { faker } = require("@faker-js/faker");
 
-describe("Testes dinâmicos de liberação de cartão com Faker e Mock", () => {
+describe("Testes de liberação de cartão", () => {
 
-  // TODO: Gerar 100 clientes aleatórios usando faker
-  const clients = Array.from({ length: 100 }).map(() => ({
-    id: /* complete */,
-    age: /* complete */,
-    income: /* complete */
-  }));
+  const clientes = [];
+  for (let i = 0; i < 100; i++) {
+    clientes.push({
+      id: faker.string.uuid(),
+      age: faker.number.int({ min: 15, max: 70 }),
+      income: faker.number.int({ min: 1000, max: 10000 })
+    });
+  }
 
-  clients.forEach((client, index) => {
-    test(`Cliente #${index + 1} -> idade: ${client.age}, renda: ${client.income}`, () => {
-      // TODO: Chamar a função que avalia o cartão
-      const result = /* complete */;
+  for (let i = 0; i < clientes.length; i++) {
+    const cliente = clientes[i];
 
-      // TODO: Criar mock da função de notificação
-      const mockNotify = /* complete */;
+    test("Cliente " + (i + 1) + " idade " + cliente.age + " renda " + cliente.income, () => {
+      const resultado = evaluateCard(cliente);
 
-      // TODO: Chamar o mock passando client.id e result
-      /* complete */
+      const notificar = jest.fn();
 
-      // TODO: Verificar as regras de negócio com expect(...)
-      if (/* condição cliente não aprovado */) {
-        expect(result).toBe("NEGADO");
-      } else if (/* condição premium */) {
-        expect(result).toBe("PREMIUM");
+      notificar(cliente.id, resultado);
+
+      if (cliente.age < 18 || cliente.income <= 2000) {
+        expect(resultado).toBe("NEGADO");
+      } else if (cliente.income > 5000) {
+        expect(resultado).toBe("PREMIUM");
       } else {
-        expect(result).toBe("BÁSICO");
+        expect(resultado).toBe("BÁSICO");
       }
 
-      // TODO: Validar se o mock foi chamado corretamente
-      expect(/* complete */).toHaveBeenCalledTimes(1);
-      expect(/* complete */).toHaveBeenCalledWith(client.id, result);
+      expect(notificar).toHaveBeenCalledTimes(1);
+      expect(notificar).toHaveBeenCalledWith(cliente.id, resultado);
     });
-  });
+  }
 
 });
