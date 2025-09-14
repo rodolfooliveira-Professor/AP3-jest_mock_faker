@@ -6,35 +6,34 @@ describe("Testes dinâmicos de liberação de cartão com Faker e Mock", () => {
 
   // TODO: Gerar 100 clientes aleatórios usando faker
   const clients = Array.from({ length: 100 }).map(() => ({
-    id: /* complete */,
-    age: /* complete */,
-    income: /* complete */
+    id: faker.string.uuid(),
+    age: faker.number.int({ min: 16, max: 70 }),
+    income: faker.number.float({ min: 1000, max: 10000 }),
   }));
 
   clients.forEach((client, index) => {
     test(`Cliente #${index + 1} -> idade: ${client.age}, renda: ${client.income}`, () => {
-      // TODO: Chamar a função que avalia o cartão
-      const result = /* complete */;
+      // Cria um mock da função de notificação
+      const mockNotify = jest.fn();
 
-      // TODO: Criar mock da função de notificação
-      const mockNotify = /* complete */;
+      // Chama a função que avalia o cartão
+      const result = evaluateCard(client);
 
-      // TODO: Chamar o mock passando client.id e result
-      /* complete */
+      // Chama o mock da função, passando o id do cliente e o resultado da avaliação
+      mockNotify(client.id, result);
 
-      // TODO: Verificar as regras de negócio com expect(...)
-      if (/* condição cliente não aprovado */) {
+      // Verifica as regras de negócio
+      if (client.age < 18 || client.income <= 2000) {
         expect(result).toBe("NEGADO");
-      } else if (/* condição premium */) {
+      } else if (client.income > 5000) {
         expect(result).toBe("PREMIUM");
       } else {
         expect(result).toBe("BÁSICO");
       }
 
-      // TODO: Validar se o mock foi chamado corretamente
-      expect(/* complete */).toHaveBeenCalledTimes(1);
-      expect(/* complete */).toHaveBeenCalledWith(client.id, result);
+      // Valida se o mock foi chamado corretamente
+      expect(mockNotify).toHaveBeenCalledTimes(1);
+      expect(mockNotify).toHaveBeenCalledWith(client.id, result);
     });
   });
-
 });

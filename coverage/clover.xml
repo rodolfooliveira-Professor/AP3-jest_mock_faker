@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1757869727268" clover="3.2.0">
+  <project timestamp="1757869727268" name="All files">
+    <metrics statements="6" coveredstatements="5" conditionals="6" coveredconditionals="6" methods="2" coveredmethods="1" elements="14" coveredelements="12" complexity="0" loc="6" ncloc="6" packages="1" files="1" classes="1"/>
+    <file name="cardService.js" path="C:\www\AP3-jest_mock_faker\AP3-jest_mock_faker\src\cardService.js">
+      <metrics statements="6" coveredstatements="5" conditionals="6" coveredconditionals="6" methods="2" coveredmethods="1"/>
+      <line num="2" count="100" type="cond" truecount="2" falsecount="0"/>
+      <line num="3" count="96" type="cond" truecount="2" falsecount="0"/>
+      <line num="4" count="83" type="cond" truecount="2" falsecount="0"/>
+      <line num="5" count="29" type="stmt"/>
+      <line num="10" count="0" type="stmt"/>
+      <line num="13" count="1" type="stmt"/>
+    </file>
+  </project>
+</coverage>
