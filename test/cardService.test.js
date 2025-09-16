@@ -19,7 +19,12 @@ describe("Testes dinâmicos de liberação de cartão com Faker e Mock", () => {
       const result = evaluateCard(client);
 
       // TODO: Criar mock da função de notificação
+      // DONE:Criar mock da função de notificação
+      const mockNotify = jest.fn();
 
+      // TODO: Chamar o mock passando client.id e result
+      // DONE:Simular notificação passando client.id e result
+      mockNotify(client.id, result);
 
       // TODO: Chamar o mock passando client.id e result
    
