@@ -1,40 +1,50 @@
 // test/cardService.test.js
+
+// 1. Importa as funções do arquivo de serviço e a biblioteca faker
 const { evaluateCard, sendCardNotification } = require("../src/cardService");
 const { faker } = require("@faker-js/faker");
 
 describe("Testes dinâmicos de liberação de cartão com Faker e Mock", () => {
-
-  // TODO: Gerar 100 clientes aleatórios usando faker
+  // 2. GERAÇÃO DE CLIENTES ALEATÓRIOS
+  // Gera um array com 100 clientes usando dados aleatórios do Faker
   const clients = Array.from({ length: 100 }).map(() => ({
-    id: /* complete */,
-    age: /* complete */,
-    income: /* complete */
+    id: faker.string.uuid(), // Gera um ID único
+    age: faker.number.int({ min: 16, max: 80 }), // Gera idade entre 16 e 80
+    income: faker.number.float({ min: 800, max: 15000, fractionDigits: 2 }), // Gera renda entre 800 e 15000
   }));
 
+  // 3. EXECUÇÃO DOS TESTES
+  // Roda um teste para cada cliente gerado
   clients.forEach((client, index) => {
-    test(`Cliente #${index + 1} -> idade: ${client.age}, renda: ${client.income}`, () => {
-      // TODO: Chamar a função que avalia o cartão
-      const result = /* complete */;
+    test(`Cliente #${index + 1} -> idade: ${client.age}, renda: R$${
+      client.income
+    }`, () => {
+      // 4. CHAMADA DA FUNÇÃO PRINCIPAL
+      // Chama a função que avalia o cartão, passando o cliente atual
+      const result = evaluateCard(client);
 
-      // TODO: Criar mock da função de notificação
-      const mockNotify = /* complete */;
+      // 5. CRIAÇÃO DO MOCK
+      // Cria um mock (simulação) da função de notificação
+      const mockNotify = jest.fn();
 
-      // TODO: Chamar o mock passando client.id e result
-      /* complete */
+      // 6. CHAMADA DO MOCK
+      // Chama o mock, passando o ID do cliente e o resultado da avaliação
+      mockNotify(client.id, result);
 
-      // TODO: Verificar as regras de negócio com expect(...)
-      if (/* condição cliente não aprovado */) {
-        expect(result).toBe("NEGADO");
-      } else if (/* condição premium */) {
-        expect(result).toBe("PREMIUM");
+      // 7. VERIFICAÇÃO DAS REGRAS DE NEGÓCIO
+      // Verifica se o resultado está correto de acordo com a idade e a renda
+      if (client.age < 18 || client.income <= 2000) {
+        expect(result).toBe("NEGADO"); // Espera "NEGADO" se for menor de idade ou tiver renda baixa
+      } else if (client.income > 5000) {
+        expect(result).toBe("PREMIUM"); // Espera "PREMIUM" se a renda for alta
       } else {
-        expect(result).toBe("BÁSICO");
+        expect(result).toBe("BÁSICO"); // Nos outros casos, espera "BÁSICO"
       }
 
-      // TODO: Validar se o mock foi chamado corretamente
-      expect(/* complete */).toHaveBeenCalledTimes(1);
-      expect(/* complete */).toHaveBeenCalledWith(client.id, result);
+      // 8. VALIDAÇÃO DO MOCK
+      // Valida se a função de notificação (mock) foi chamada corretamente
+      expect(mockNotify).toHaveBeenCalledTimes(1); // Garante que foi chamada apenas uma vez
+      expect(mockNotify).toHaveBeenCalledWith(client.id, result); // Garante que foi chamada com os parâmetros corretos
     });
   });
-
 });
