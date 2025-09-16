@@ -8,6 +8,8 @@ function evaluateCard(client) {
 // Função de notificação (mockável)
 function sendCardNotification(clientId, cardType) {
   console.log(`Cliente ${clientId}: Cartão ${cardType} enviado.`);
+
+ 
 }
 
 module.exports = { evaluateCard, sendCardNotification };
