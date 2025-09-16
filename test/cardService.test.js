@@ -1,4 +1,7 @@
 // test/cardService.test.js
+/**
+ * Esse trabalho é do grupo G7 (Lucas, Jaine e Pedro)
+ */
 const { evaluateCard, sendCardNotification } = require("../src/cardService");
 const { faker } = require("@faker-js/faker");
 
