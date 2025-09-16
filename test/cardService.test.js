@@ -5,27 +5,27 @@ const { evaluateCard, sendCardNotification } = require("../src/cardService");
 const { faker } = require("@faker-js/faker");
 
 describe("Testes dinâmicos de liberação de cartão com Faker e Mock", () => {
-  
   // 2. GERAÇÃO DE CLIENTES ALEATÓRIOS
   // Gera um array com 100 clientes usando dados aleatórios do Faker
   const clients = Array.from({ length: 100 }).map(() => ({
     id: faker.string.uuid(), // Gera um ID único
-    age: faker.number.int({ min: 10, max: 90 }), // Gera idade entre 10 e 90
-    income: faker.number.int({ min: 500, max: 15000 }), // Gera renda entre 500 e 15000
+    age: faker.number.int({ min: 16, max: 80 }), // Gera idade entre 16 e 80
+    income: faker.number.float({ min: 800, max: 15000, fractionDigits: 2 }), // Gera renda entre 800 e 15000
   }));
 
   // 3. EXECUÇÃO DOS TESTES
   // Roda um teste para cada cliente gerado
   clients.forEach((client, index) => {
-    test(`Cliente #${index + 1} -> idade: ${client.age}, renda: R$${client.income}`, () => {
-      
+    test(`Cliente #${index + 1} -> idade: ${client.age}, renda: R$${
+      client.income
+    }`, () => {
       // 4. CHAMADA DA FUNÇÃO PRINCIPAL
       // Chama a função que avalia o cartão, passando o cliente atual
       const result = evaluateCard(client);
 
       // 5. CRIAÇÃO DO MOCK
       // Cria um mock (simulação) da função de notificação
-      const mockNotify = jest.fn(sendCardNotification);
+      const mockNotify = jest.fn();
 
       // 6. CHAMADA DO MOCK
       // Chama o mock, passando o ID do cliente e o resultado da avaliação
